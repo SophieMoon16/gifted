@@ -1,0 +1,19 @@
+# Active Passenger pour Node.js
+PassengerEnabled on
+
+# Racine de ton app Node
+PassengerAppRoot /home/luso0079/gifted
+
+# Type d'app
+PassengerAppType node
+
+# Fichier de démarrage de Nuxt
+PassengerStartupFile .output/server/index.mjs
+
+# Version Node à utiliser
+PassengerNodejs /home/luso0079/nodevenv/gifted/22/bin/node
+
+# Redirige tout vers Node (Nuxt gère le routing)
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ .output/server/index.mjs [QSA,PT,L]
