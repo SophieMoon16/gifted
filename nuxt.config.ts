@@ -4,4 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ["~/assets/css/main.css"],
   modules: ["@nuxt/ui", "@nuxt/image"],
+  colorMode: {
+    preference: "light", // Force le mode clair par défaut
+    fallback: "light", // Si pas de préférence, utilise light
+  },
 });

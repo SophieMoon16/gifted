@@ -9,6 +9,5 @@ export default defineAppConfig({
       warning: "amber",
       error: "rose",
     },
-    darkMode: false,
   },
 });
