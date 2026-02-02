@@ -11,8 +11,9 @@ export default defineAppConfig({
     },
   },
   colorMode: {
-    preference: "light", // ou 'light' ou 'dark'
+    preference: "light", // mode light par défaut
     fallback: "light",
-    classSuffix: "", // Important : pas de suffixe
+    classSuffix: "",
+    storageKey: "color-mode", // facultatif, pour ne pas se baser sur localStorage
   },
 });
