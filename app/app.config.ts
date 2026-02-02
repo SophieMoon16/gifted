@@ -9,11 +9,6 @@ export default defineAppConfig({
       warning: "amber",
       error: "rose",
     },
-    colorMode: {
-      preference: "light", // mode light par défaut
-      fallback: "light",
-      classSuffix: "",
-      storageKey: "color-mode", // facultatif, pour ne pas se baser sur localStorage
-    },
+    darkMode: false,
   },
 });
