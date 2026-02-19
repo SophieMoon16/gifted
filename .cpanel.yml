@@ -1,6 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home/luso0079/gifted/
-    - /bin/cp -R .output $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH

@@ -2,34 +2,33 @@
 import type { ButtonProps } from "@nuxt/ui";
 const cards = ref([
   {
-    title: "De l'écologie",
-    description:
-      "Nous nous engageons à minimiser notre impact environnemental : Serveurs durables, coding écologique, chaque détail compte.",
-    icon: "i-lucide-leaf",
+    title: "1. Scan",
+    description: "Scannez le code QR code du commerçant après votre achat.",
+    icon: "i-lucide-scan-qr-code",
   },
   {
-    title: "De la qualité",
+    title: "2. Validation",
     description:
-      "Fidélisez vos clients avec une solution fiable et performante, conçue pour offrir une expérience conviviale à chaque interaction.",
-    icon: "i-lucide-medal",
-  },
-  {
-    title: "De la simplicité",
-    description:
-      "Scannez le QR code du commerçant avec votre smartphone pour ajouter un tampon digital. C'est simple, rapide et efficace.",
+      "Le commerçant valide votre tampon digital pour éviter toutes fraudes.",
     icon: "i-lucide-thumbs-up",
+  },
+  {
+    title: "3. Récompense",
+    description:
+      "Au bout du 9ème tampon, obtenez une récompense de la part du commerçant.",
+    icon: "i-lucide-gift",
   },
 ]);
 
 const links = ref<ButtonProps[]>([
   {
     label: "Je suis commerçant",
-    to: "/docs/getting-started",
+    to: "/register-shop",
     icon: "i-lucide-square-play",
   },
   {
     label: "Je suis client",
-    to: "/docs/getting-started/theme/design-system",
+    to: "/signup-client",
     color: "neutral",
     variant: "subtle",
     trailingIcon: "i-lucide-arrow-right",
@@ -38,9 +37,9 @@ const links = ref<ButtonProps[]>([
 </script>
 <template>
   <UPageHero
-    title="Gifted vous accompagne"
-    description="Offrez à vos clients une carte de tampons digitale simple et intuitive, accessible depuis leur smartphone. "
-    headline="La fidélité réinventée, 100% digital !"
+    title="La fidélité réinventée"
+    description="Oubliez les cartes papier. Collectionnez des tampons digitaux auprès de vos commerces préférés et gagnez des récompenses."
+    headline="100% digital, 100% simple, 100% fun !"
     :ui="{ container: 'sm:py-10 py-10 lg:py-10' }"
     orientation="horizontal"
     :links="links"

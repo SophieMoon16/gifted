@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Header from "~/components/Header.vue";
-import Hero from "~/components/Hero.vue";
+import Activation from "~/components/Activation.vue";
 import Footer from "~/components/Footer.vue";
 </script>
 
@@ -8,7 +8,7 @@ import Footer from "~/components/Footer.vue";
   <div class="min-h-screen flex flex-col">
     <div class="flex-1">
       <Header />
-      <Hero />
+      <Activation />
     </div>
     <Footer />
   </div>

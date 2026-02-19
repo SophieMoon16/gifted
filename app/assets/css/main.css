@@ -38,7 +38,3 @@
   --ui-border-inverted: var(--ui-color-neutral-200);
   --ui-radius: 0.25rem;
 }
-
-html {
-  color-scheme: light; /* Force le navigateur à utiliser light */
-}

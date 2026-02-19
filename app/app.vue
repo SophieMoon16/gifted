@@ -1,5 +1,15 @@
+<script setup lang="ts">
+import type { ToasterProps } from "@nuxt/ui";
+
+const toaster: ToasterProps = {
+  position: "top-right",
+  duration: 4000,
+  max: 1,
+};
+</script>
+
 <template>
- <UApp>
+  <UApp :toaster="toaster">
     <NuxtPage />
- </Uapp>
+  </UApp>
 </template>
