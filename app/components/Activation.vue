@@ -18,7 +18,7 @@ if (token) {
     );
     message = response.message;
   } catch (err: any) {
-    message = err.data?.statusMessage || "Erreur lors de l'activation";
+    message = err.data?.message || "Erreur lors de l'activation";
   }
 } else {
   message = "Token manquant";

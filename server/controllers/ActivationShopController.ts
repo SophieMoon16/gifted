@@ -15,7 +15,7 @@ export class ActivationShopController {
       if (!token) {
         throw createError({
           statusCode: 400,
-          statusMessage: "Token manquant",
+          message: "Token manquant",
         });
       }
 
@@ -34,7 +34,7 @@ export class ActivationShopController {
       // 5️. Sinon, crée une erreur HTTP 500 générique
       throw createError({
         statusCode: 500,
-        statusMessage: error.message || "Erreur lors de l'activation",
+        message: error.message || "Erreur lors de l'activation",
       });
     }
   }

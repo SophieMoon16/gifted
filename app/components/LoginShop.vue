@@ -62,8 +62,7 @@ async function submitLogin() {
       });
     }
   } catch (err: any) {
-    const message =
-      err.data?.statusMessage || "Une erreur inattendue est survenue";
+    const message = err.data?.message || "Une erreur inattendue est survenue";
 
     toast.add({
       title: "Oups ! Une petite erreur",

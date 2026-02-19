@@ -13,14 +13,14 @@ export class AuthShop {
     if (!shop) {
       throw createError({
         statusCode: 401,
-        statusMessage: "Email ou mot de passe incorrect",
+        message: "Email ou mot de passe incorrect",
       });
     }
 
     if (!shop.is_active) {
       throw createError({
         statusCode: 403,
-        statusMessage: "Compte non activé",
+        message: "Compte non activé",
       });
     }
 
@@ -28,7 +28,7 @@ export class AuthShop {
     if (!isMatch) {
       throw createError({
         statusCode: 401,
-        statusMessage: "Email ou mot de passe incorrect",
+        message: "Email ou mot de passe incorrect",
       });
     }
 

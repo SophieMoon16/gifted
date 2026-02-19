@@ -13,7 +13,7 @@ export class ActivationShop {
     if (!token) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Token manquant",
+        message: "Token manquant",
       });
     }
 
@@ -22,7 +22,7 @@ export class ActivationShop {
     if (!shop) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Token invalide",
+        message: "Token invalide",
       });
     }
 
@@ -30,7 +30,7 @@ export class ActivationShop {
     if (shop.is_active) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Compte déjà activé",
+        message: "Compte déjà activé",
       });
     }
 
@@ -41,7 +41,7 @@ export class ActivationShop {
       console.log(error);
       throw createError({
         statusCode: 500,
-        statusMessage: "Impossible d'activer le compte, réessayez plus tard.",
+        message: "Impossible d'activer le compte, réessayez plus tard.",
       });
     }
 
