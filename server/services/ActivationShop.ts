@@ -1,4 +1,5 @@
 import { ShopModel } from "../models/ShopModel";
+import { createError } from "h3"; // Nitro / Nuxt 3
 
 export class ActivationShop {
   private shopModel: ShopModel;
@@ -10,24 +11,41 @@ export class ActivationShop {
   async activate(token: string) {
     // 1️. Vérifier que le token est présent
     if (!token) {
-      throw new Error("Token manquant");
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Token manquant",
+      });
     }
 
     // 2️. Chercher le shop correspondant au token
     const shop = await this.shopModel.findByActivationToken(token);
-
     if (!shop) {
-      throw new Error("Token invalide");
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Token invalide",
+      });
     }
 
     // 3️. Vérifier si déjà activé
     if (shop.is_active) {
-      throw new Error("Compte déjà activé");
+      throw createError({
+        statusCode: 400,
+        statusMessage: "Compte déjà activé",
+      });
     }
 
     // 4️. Activer le shop
-    await this.shopModel.activateShop(shop.id_shop);
+    try {
+      await this.shopModel.activateShop(shop.id_shop);
+    } catch (error) {
+      console.log(error);
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Impossible d'activer le compte, réessayez plus tard.",
+      });
+    }
 
+    // Succès
     return { message: "Compte activé avec succès" };
   }
 }

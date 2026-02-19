@@ -49,22 +49,27 @@ async function submit() {
   }
 
   try {
+    // Appel backend
     const response = await $fetch<RegisterResponse>("/api/register-shop", {
       method: "POST",
       body: state,
     });
 
-    // Tout succès passe ici
-    toast.add({
-      title: "Inscription réussie !",
-      description: response.message,
-      icon: "i-lucide-check",
-      progress: false,
-    });
+    // Vérifier success pour les cas comme "Email d'activation renvoyé"
+    if (response.success) {
+      toast.add({
+        title: "Inscription réussie !",
+        description: response.message,
+        icon: "i-lucide-check",
+        progress: false,
+      });
+    }
   } catch (error: any) {
+    // Couvre toutes les erreurs levées par throw createError
     toast.add({
       title: "Oups ! Une erreur",
-      description: error.data?.message || "Une erreur inattendue est survenue.",
+      description:
+        error.data?.statusMessage || "Une erreur inattendue est survenue.",
       icon: "i-lucide-annoyed",
       progress: false,
     });

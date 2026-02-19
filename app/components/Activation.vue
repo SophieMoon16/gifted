@@ -17,8 +17,8 @@ if (token) {
       `/api/activate-shop?token=${token}`,
     );
     message = response.message;
-  } catch (err) {
-    message = "Erreur lors de l'activation";
+  } catch (err: any) {
+    message = err.data?.statusMessage || "Erreur lors de l'activation";
   }
 } else {
   message = "Token manquant";

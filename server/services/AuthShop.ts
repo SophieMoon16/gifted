@@ -1,32 +1,38 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { ShopModel } from "../models/ShopModel";
+import { createError } from "h3"; // Nitro / Nuxt 3
 
 export class AuthShop {
   private shopModel = new ShopModel();
 
   // Retourne le token uniquement
   async login(email: string, password: string) {
-    //console.log("Email reçu :", email);
     const shop = await this.shopModel.findByEmail(email);
-    //console.log("Shop trouvé :", shop);
 
     if (!shop) {
-      throw new Error("Email ou mot de passe incorrect");
+      throw createError({
+        statusCode: 401,
+        statusMessage: "Email ou mot de passe incorrect",
+      });
     }
 
     if (!shop.is_active) {
-      throw new Error("Compte non activé");
+      throw createError({
+        statusCode: 403,
+        statusMessage: "Compte non activé",
+      });
     }
 
     const isMatch = await bcrypt.compare(password, shop.password_hash);
-    //console.log("Password match:", isMatch); // Debug log
-
     if (!isMatch) {
-      throw new Error("Email ou mot de passe incorrect");
+      throw createError({
+        statusCode: 401,
+        statusMessage: "Email ou mot de passe incorrect",
+      });
     }
 
-    const maxSeconds = Number(process.env.JWT_EXPIRES);
+    const maxSeconds = Number(process.env.JWT_EXPIRES) || 3600;
 
     // Génère JWT
     const token = jwt.sign(
@@ -35,7 +41,6 @@ export class AuthShop {
       { expiresIn: maxSeconds },
     );
 
-    //console.log("Generated token:", token);
     return token;
   }
 }

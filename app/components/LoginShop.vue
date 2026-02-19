@@ -53,14 +53,17 @@ async function submitLogin() {
       body: state,
     });
 
-    toast.add({
-      title: "Connexion réussie !",
-      description: response.message,
-      icon: "i-lucide-check",
-      progress: false,
-    });
+    if (response.success) {
+      toast.add({
+        title: "Connexion réussie !",
+        description: response.message,
+        icon: "i-lucide-check",
+        progress: false,
+      });
+    }
   } catch (err: any) {
-    const message = err.data?.message || "Une erreur inattendue est survenue";
+    const message =
+      err.data?.statusMessage || "Une erreur inattendue est survenue";
 
     toast.add({
       title: "Oups ! Une petite erreur",
