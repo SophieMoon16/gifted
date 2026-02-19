@@ -13,7 +13,7 @@ export class Mailer {
     this.transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
-      secure: false,
+      secure: true, // true pour port 465, false pour les autres ports
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
@@ -27,7 +27,7 @@ export class Mailer {
     const link = `${process.env.APP_URL}/activate-shop?token=${token}`;
 
     const mailOptions = {
-      from: '"Gifted" <no-reply@gifted.cool>',
+      from: '"Gifted" <hello@gifted.cool>',
       to: email,
       subject: "Activez votre compte",
 

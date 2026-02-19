@@ -24,7 +24,7 @@ export class RegisterShopController {
     if (!name || !normalizedEmail || !password) {
       throw createError({
         statusCode: 400,
-        statusMessage: "Tous les champs sont requis",
+        message: "Tous les champs sont requis",
       });
     }
 
@@ -36,7 +36,7 @@ export class RegisterShopController {
       if (existingShop.is_active) {
         throw createError({
           statusCode: 400,
-          statusMessage: "Vous possédez déjà un compte actif sur Gifted.",
+          message: "Vous possédez déjà un compte actif sur Gifted.",
         });
       }
 
@@ -54,7 +54,7 @@ export class RegisterShopController {
         } catch (error) {
           throw createError({
             statusCode: 500,
-            statusMessage: "Impossible d'envoyer l'email, réessayez plus tard.",
+            message: "Impossible d'envoyer l'email, réessayez plus tard.",
           });
         }
       }
@@ -84,7 +84,7 @@ export class RegisterShopController {
       console.log(error);
       throw createError({
         statusCode: 500,
-        statusMessage: "Impossible d'envoyer l'email, réessayez plus tard.",
+        message: "Impossible d'envoyer l'email, réessayez plus tard.",
       });
     }
   }

@@ -63,13 +63,19 @@ async function submit() {
         icon: "i-lucide-check",
         progress: false,
       });
+    } else {
+      toast.add({
+        title: "Oups ! Une erreur",
+        description: response.message || "Une erreur est survenue.",
+        icon: "i-lucide-annoyed",
+        progress: false,
+      });
     }
   } catch (error: any) {
     // Couvre toutes les erreurs levées par throw createError
     toast.add({
       title: "Oups ! Une erreur",
-      description:
-        error.data?.statusMessage || "Une erreur inattendue est survenue.",
+      description: error.data?.message || "Une erreur inattendue est survenue.",
       icon: "i-lucide-annoyed",
       progress: false,
     });
