@@ -2,9 +2,6 @@ import pkg from "pg";
 const { Pool } = pkg;
 
 export const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT) || 5432,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: String(process.env.DB_NAME),
+  connectionString: process.env.DB_URL,
+  ssl: process.env.ENV === "prod" ? { rejectUnauthorized: false } : false,
 });
