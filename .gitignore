@@ -5,6 +5,9 @@
 .nitro
 .cache
 dist
+# Nuxt / Nitro build outputs
+.output/
+.netlify/functions-internal/
 
 # Node dependencies
 node_modules
