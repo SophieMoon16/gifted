@@ -2,39 +2,25 @@
 const toast = useToast();
 const showPassword = ref(false);
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function slugify(name: string) {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-") // remplace les espaces par des -
-    .replace(/[^\w-]+/g, ""); // supprime les caractères non alphanumériques
-}
-function normalizeEmail(email: string) {
+function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
-
-interface LoginResponse {
+interface RegisterResponse {
   success: boolean;
   message: string;
-  shopId?: number;
-  name: string;
-  token: string;
-  // facultatif si erreur
 }
-
 const state = reactive({
+  name: "",
   email: "",
   password: "",
 });
 
-async function submitLogin() {
+async function submit() {
   state.email = normalizeEmail(state.email);
-
-  // validations frontend
-  if (!state.email || !state.password) {
+  // console.log("Form submitted with data:", state);
+  if (!state.name || !state.email || !state.password) {
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: "Tous les champs doivent être renseignés.",
       icon: "i-lucide-annoyed",
       progress: false,
@@ -44,7 +30,7 @@ async function submitLogin() {
 
   if (!emailRegex.test(state.email)) {
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: "L'email n'est pas valide.",
       icon: "i-lucide-annoyed",
       progress: false,
@@ -54,7 +40,7 @@ async function submitLogin() {
 
   if (state.password.length < 5) {
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: "Le mot de passe doit contenir au moins 5 caractères.",
       icon: "i-lucide-annoyed",
       progress: false,
@@ -63,51 +49,33 @@ async function submitLogin() {
   }
 
   try {
-    // Appel API
-    const response = await $fetch<LoginResponse>("/api/login-shop", {
+    // Appel backend
+    const response = await $fetch<RegisterResponse>("/api/register-client", {
       method: "POST",
       body: state,
     });
 
-    // succès
-    if (response.success && response.shopId) {
+    // Vérifier success pour les cas comme "Email d'activation renvoyé"
+    if (response.success) {
       toast.add({
-        title: "Connexion réussie !",
+        title: "Inscription réussie !",
         description: response.message,
         icon: "i-lucide-check",
         progress: false,
       });
-      localStorage.setItem(
-        "shop",
-        JSON.stringify({
-          id: response.shopId, // 🔹 ajoute le shopId
-          name: response.name,
-        }),
-      );
-
-      localStorage.setItem("token", response.token);
-      await navigateTo(
-        `/shop-account/${response.shopId}/${slugify(response.name)}/dashboard`,
-      );
     } else {
-      // si API renvoie success=false
       toast.add({
-        title: "Oups !",
-        description: response.message || "Une erreur est survenue",
+        title: "Oups ! Une erreur",
+        description: response.message || "Une erreur est survenue.",
         icon: "i-lucide-annoyed",
         progress: false,
       });
     }
-  } catch (err: any) {
-    // ici tu récupères le vrai message d'erreur de createError
-    const message =
-      err?.data?.message ||
-      err?.message ||
-      "Une erreur inattendue est survenue";
-
+  } catch (error: any) {
+    // Couvre toutes les erreurs levées par throw createError
     toast.add({
-      title: "Oups !",
-      description: message,
+      title: "Oups ! Une erreur",
+      description: error.data?.message || "Une erreur inattendue est survenue.",
       icon: "i-lucide-annoyed",
       progress: false,
     });
@@ -120,16 +88,19 @@ async function submitLogin() {
     <UForm
       :state="state"
       class="space-y-4 w-full max-w-md p-7 border border-gray-300 rounded"
-      @submit="submitLogin"
+      @submit="submit"
     >
-      <UIcon name="i-lucide-store" class="w-full size-8 mx-auto" />
+      <UIcon name="i-lucide-smile" class="w-full size-8 mx-auto" />
       <h3 class="text-center text-2xl font-bold">
-        Se connecter en tant que commerçant
+        S'inscrire en tant que client
       </h3>
       <p class="text-center text-sm">
-        Pas encore inscrit chez nous ?
-        <a href="/register-shop" class="hover:underline">S'inscrire</a>
+        De retour chez nous ?
+        <a href="/login-client" class="hover:underline">Se connecter</a>
       </p>
+      <UFormField label="Prénom" name="name">
+        <UInput class="w-full" v-model="state.name" />
+      </UFormField>
       <UFormField label="Email" name="email">
         <UInput class="w-full" v-model="state.email" />
       </UFormField>
@@ -157,11 +128,19 @@ async function submitLogin() {
           </template>
         </UInput>
       </UFormField>
+      <p class="text-xs">
+        En cliquant sur "S'inscrire", vous acceptez nos
+        <a href="/conditions" class="hover:underline">Conditions générales</a>
+        et notre
+        <a href="/confidentialite" class="hover:underline"
+          >Politique de confidentialité</a
+        >.
+      </p>
       <UButton
         class="w-full flex justify-center items-center cursor-pointer"
         type="submit"
       >
-        Se connecter
+        S'inscrire
       </UButton>
     </UForm>
   </div>

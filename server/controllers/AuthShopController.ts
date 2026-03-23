@@ -1,26 +1,24 @@
 import { AuthShop } from "../services/AuthShop";
-import { setCookie } from "h3";
 
 export class AuthShopController {
-  private authService: AuthShop;
+  private authShop = new AuthShop();
 
-  constructor() {
-    this.authService = new AuthShop();
-  }
-
-  // Login
   async login(event: any, email: string, password: string) {
-    const token = await this.authService.login(email, password);
-    const maxSeconds = Number(process.env.JWT_EXPIRES);
-    // Stocke le JWT dans un cookie httpOnly
-    setCookie(event, "token", token, {
-      httpOnly: true,
-      secure: false, // à true en production avec HTTPS
-      sameSite: "strict",
-      maxAge: maxSeconds,
-      path: "/",
-    });
+    try {
+      const { token, shop } = await this.authShop.login(email, password);
 
-    return { success: true, message: "Connexion réussie" };
+      return {
+        success: true,
+        message: "Connexion réussie !",
+        shopId: shop.id_shop,
+        name: shop.name,
+        token,
+      };
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err.message || "Erreur inconnue",
+      };
+    }
   }
 }

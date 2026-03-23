@@ -28,7 +28,7 @@ const links = ref<ButtonProps[]>([
   },
   {
     label: "Je suis client",
-    to: "/signup-client",
+    to: "/register-client",
     color: "neutral",
     variant: "subtle",
     trailingIcon: "i-lucide-arrow-right",

@@ -2,39 +2,24 @@
 const toast = useToast();
 const showPassword = ref(false);
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function slugify(name: string) {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-") // remplace les espaces par des -
-    .replace(/[^\w-]+/g, ""); // supprime les caractères non alphanumériques
-}
-function normalizeEmail(email: string) {
+function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
-
 interface LoginResponse {
   success: boolean;
   message: string;
-  shopId?: number;
-  name: string;
-  token: string;
-  // facultatif si erreur
 }
-
 const state = reactive({
   email: "",
   password: "",
 });
 
 async function submitLogin() {
+  // console.log("Form submitted with data:", state);
   state.email = normalizeEmail(state.email);
-
-  // validations frontend
   if (!state.email || !state.password) {
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: "Tous les champs doivent être renseignés.",
       icon: "i-lucide-annoyed",
       progress: false,
@@ -44,7 +29,7 @@ async function submitLogin() {
 
   if (!emailRegex.test(state.email)) {
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: "L'email n'est pas valide.",
       icon: "i-lucide-annoyed",
       progress: false,
@@ -54,7 +39,7 @@ async function submitLogin() {
 
   if (state.password.length < 5) {
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: "Le mot de passe doit contenir au moins 5 caractères.",
       icon: "i-lucide-annoyed",
       progress: false,
@@ -63,50 +48,24 @@ async function submitLogin() {
   }
 
   try {
-    // Appel API
-    const response = await $fetch<LoginResponse>("/api/login-shop", {
+    const response = await $fetch<LoginResponse>("/api/login-client", {
       method: "POST",
       body: state,
     });
 
-    // succès
-    if (response.success && response.shopId) {
+    if (response.success) {
       toast.add({
         title: "Connexion réussie !",
         description: response.message,
         icon: "i-lucide-check",
         progress: false,
       });
-      localStorage.setItem(
-        "shop",
-        JSON.stringify({
-          id: response.shopId, // 🔹 ajoute le shopId
-          name: response.name,
-        }),
-      );
-
-      localStorage.setItem("token", response.token);
-      await navigateTo(
-        `/shop-account/${response.shopId}/${slugify(response.name)}/dashboard`,
-      );
-    } else {
-      // si API renvoie success=false
-      toast.add({
-        title: "Oups !",
-        description: response.message || "Une erreur est survenue",
-        icon: "i-lucide-annoyed",
-        progress: false,
-      });
     }
   } catch (err: any) {
-    // ici tu récupères le vrai message d'erreur de createError
-    const message =
-      err?.data?.message ||
-      err?.message ||
-      "Une erreur inattendue est survenue";
+    const message = err.data?.message || "Une erreur inattendue est survenue";
 
     toast.add({
-      title: "Oups !",
+      title: "Oups ! Une petite erreur",
       description: message,
       icon: "i-lucide-annoyed",
       progress: false,
@@ -124,11 +83,11 @@ async function submitLogin() {
     >
       <UIcon name="i-lucide-store" class="w-full size-8 mx-auto" />
       <h3 class="text-center text-2xl font-bold">
-        Se connecter en tant que commerçant
+        Se connecter en tant que client
       </h3>
       <p class="text-center text-sm">
         Pas encore inscrit chez nous ?
-        <a href="/register-shop" class="hover:underline">S'inscrire</a>
+        <a href="/register-client" class="hover:underline">S'inscrire</a>
       </p>
       <UFormField label="Email" name="email">
         <UInput class="w-full" v-model="state.email" />
